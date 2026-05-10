@@ -1,0 +1,398 @@
+/*
+---------------------------------------
+               Imports
+---------------------------------------
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+@import "tailwindcss";
+
+/*
+---------------------------------------
+                Theme
+---------------------------------------
+ */
+
+@theme {
+  --color-primary: #050505;
+  --color-light-100: #f5f5f5;
+  --color-light-200: #a1a1aa;
+  --color-gray-100: #71717a;
+  --color-dark-100: #111111;
+  --font-dm-sans: "DM Sans", sans-serif;
+  --breakpoint-xs: 480px;
+}
+
+/*
+---------------------------------------
+                  Base
+---------------------------------------
+*/
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    background: #050505;
+    color: white;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  h1 {
+    @apply mx-auto max-w-4xl text-center text-5xl font-bold leading-tight tracking-[-2%] text-white sm:text-[64px] sm:leading-[76px];
+  }
+
+  h2 {
+    @apply text-2xl font-bold text-white sm:text-3xl;
+  }
+
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+
+  main {
+    @apply relative min-h-screen bg-primary;
+  }
+
+  header {
+    @apply mt-5 sm:mt-10;
+  }
+
+  header img {
+    @apply mx-auto h-auto w-full max-w-lg object-contain drop-shadow-md;
+    width: 100%;
+    height: 400px;
+    object-position: center center;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+  }
+}
+
+/*
+---------------------------------------
+              Layout
+---------------------------------------
+*/
+
+@layer components {
+  .pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+            radial-gradient(circle at top center, rgba(120, 72, 40, 0.28), transparent 42%),
+            radial-gradient(circle at center, rgba(255, 255, 255, 0.04), transparent 18%),
+            linear-gradient(to bottom, #1b120d 0%, #120b08 40%, #070505 100%);
+  }
+
+  .wrapper {
+    @apply relative z-10 mx-auto flex max-w-7xl flex-col px-5 py-12 xs:p-10;
+  }
+
+  .all-movies {
+    @apply space-y-6;
+  }
+
+  .all-movies > div {
+    @apply flex flex-col gap-4 md:flex-row md:items-center md:justify-between;
+  }
+
+  .all-movies h2 {
+    @apply shrink-0;
+  }
+
+  .all-movies .search {
+    @apply mx-0 mt-0 w-full max-w-xl md:max-w-lg;
+  }
+
+  .all-movies ul {
+    @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
+  }
+}
+
+/*
+---------------------------------------
+                Search
+---------------------------------------
+*/
+
+@layer components {
+
+  .search {
+    @apply relative z-20 mt-0 w-full max-w-2xl rounded-3xl border border-white/10 bg-white/5 px-4 py-1;
+  }
+
+  .search div {
+    @apply relative flex items-center;
+  }
+
+  .search img {
+    @apply pointer-events-none absolute left-2 h-5 w-5 opacity-70;
+  }
+
+  .search input {
+    @apply w-full bg-transparent py-2 pl-10 text-base text-white outline-none placeholder:text-light-200 sm:pr-10;
+  }
+
+  .search input:focus {
+    @apply ring-0;
+  }
+}
+
+/*
+---------------------------------------
+              Trending
+---------------------------------------
+*/
+
+@layer components {
+  .trending {
+    @apply mt-6;
+  }
+
+  .trending-header {
+    @apply flex items-center gap-2;
+  }
+
+  .trending-note {
+    @apply mt-2 text-sm text-light-200;
+  }
+
+  .trending ul {
+    @apply -mt-10 flex w-full flex-row flex-nowrap gap-5 overflow-x-auto hide-scrollbar;
+  }
+
+  .trending ul li {
+    @apply flex min-w-[230px] flex-row items-center;
+  }
+
+  .trending ul li p {
+    @apply fancy-text mt-[22px] text-nowrap;
+  }
+
+  .trending ul li img {
+    @apply -ml-3 h-[150px] w-[110px] rounded-lg object-cover;
+  }
+}
+
+/*
+---------------------------------------
+              Movie Card
+---------------------------------------
+*/
+
+@layer components {
+  .movie-card {
+    @apply overflow-hidden rounded-xl border border-white/10 bg-dark-100 shadow-inner shadow-white/5 transition-all duration-300;
+  }
+
+  .movie-card:hover {
+    @apply -translate-y-1 border-white/20 shadow-lg;
+  }
+
+  .movie-card-body {
+    @apply mt-4;
+  }
+
+  .movie-card h3 {
+    @apply line-clamp-1 px-3 pt-2 text-base font-bold text-white;
+  }
+
+  .movie-card .content {
+    @apply mt-0 flex flex-row flex-wrap items-center gap-2 px-3 pb-3;
+  }
+
+  .movie-card .rating {
+    @apply flex flex-row items-center gap-1;
+  }
+
+  .movie-card .rating img {
+    @apply size-4 object-contain;
+  }
+
+  .movie-card .rating p {
+    @apply text-base font-bold text-white;
+  }
+
+  .movie-card .content span {
+    @apply text-2xl text-gray-100;
+  }
+
+  .movie-card .content .lang {
+    @apply text-base font-medium capitalize text-gray-100;
+  }
+
+  .movie-card .content .year {
+    @apply text-base font-medium text-gray-100;
+  }
+
+  .movie-card-button {
+    @apply flex w-full flex-col text-left;
+  }
+
+  .movie-card-button:focus-visible {
+    @apply outline-none ring-2 ring-white ring-offset-2 ring-offset-black;
+  }
+}
+
+/*
+---------------------------------------
+              Movie Modal
+---------------------------------------
+*/
+
+@layer components {
+  .movie-modal {
+    @apply fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4;
+  }
+
+  .movie-modal-panel {
+    @apply relative w-full max-w-4xl rounded-2xl border border-white/10 bg-dark-100 p-5 shadow-2xl sm:p-6;
+  }
+
+  .movie-modal-close-btn {
+    @apply absolute right-4 top-4 flex size-10 items-center justify-center rounded-full bg-white/10 text-lg text-white transition-colors duration-200 hover:bg-white/20;
+  }
+
+  .movie-modal-close-btn:focus-visible {
+    @apply outline-none ring-2 ring-white ring-offset-2 ring-offset-black;
+  }
+
+  .movie-modal-layout {
+    @apply grid grid-cols-1 gap-5 md:grid-cols-[260px_minmax(0,1fr)] md:items-start;
+  }
+
+  .movie-modal-poster img {
+    @apply mx-auto w-full max-w-[260px] rounded-xl object-cover;
+  }
+
+  .movie-modal-details {
+    @apply flex min-w-0 flex-col;
+  }
+
+  .movie-modal-title {
+    @apply pr-12 text-2xl font-bold text-white sm:text-3xl;
+  }
+
+  .movie-modal-label {
+    @apply font-bold text-white;
+  }
+
+  .movie-modal-info-line {
+    @apply mt-2 text-sm leading-6 text-light-200;
+  }
+
+  .movie-modal-rating {
+    @apply mt-4 flex items-center gap-2;
+  }
+
+  .movie-modal-rating img {
+    @apply size-5 object-contain;
+  }
+
+  .movie-modal-rating p {
+    @apply text-base font-bold text-white;
+  }
+
+  .movie-modal-overview {
+    @apply mt-4 text-sm leading-6 text-light-200;
+  }
+
+  .movie-modal-details-grid {
+    @apply mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+
+  .movie-modal-details-grid > div {
+    @apply min-w-0;
+  }
+
+  .movie-modal-details-grid h4 {
+    @apply mb-1 text-sm font-semibold text-white;
+  }
+
+  .movie-modal-details-grid p {
+    @apply break-words text-sm leading-6 text-light-200;
+  }
+
+  .movie-modal-actions {
+    @apply mt-6 flex justify-start;
+  }
+
+  .movie-modal-trailer-link {
+    @apply inline-flex w-fit items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-white transition-colors duration-200 hover:bg-white/20;
+  }
+
+  .movie-modal-trailer-link:focus-visible {
+    @apply outline-none ring-2 ring-white ring-offset-2 ring-offset-black;
+  }
+
+  .movie-modal-trailer-link-disabled {
+    @apply cursor-not-allowed bg-white/5 text-light-200 hover:bg-white/5;
+  }
+
+  .movie-modal-empty {
+    @apply flex min-h-[260px] flex-col items-center justify-center gap-2 text-center text-white;
+  }
+
+  .movie-modal-empty h3 {
+    @apply text-2xl font-bold;
+  }
+}
+
+/*
+---------------------------------------
+              Utilities
+---------------------------------------
+ */
+
+@utility text-gradient {
+  @apply bg-linear-to-r from-white via-neutral-300 to-neutral-500 bg-clip-text text-transparent;
+}
+
+@utility fancy-text {
+  -webkit-text-stroke: 5px rgba(255, 255, 255, 0.18);
+  font-size: 190px;
+  font-family: "Bebas Neue", sans-serif;
+  color: transparent;
+}
+
+@utility hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
