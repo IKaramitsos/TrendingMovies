@@ -97,6 +97,8 @@ Appwrite is used to store and update search counts, allowing the app to show tre
 - Add genre filtering
 - Add sorting options
 - Improve accessibility and keyboard navigation further
+- Search outcomes (release date newest to oldest)
+- Trending posters clickable (Modals)
 
 ## Lessons Learned
 
