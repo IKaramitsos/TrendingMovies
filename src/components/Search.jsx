@@ -20,7 +20,7 @@ const Search = ({ searchTerm, setSearchTerm, onClear }) => {
                         onClick={onClear}
                         aria-label="Clear search"
                     >
-                        ×
+                        ✖
                     </button>
                 )}
             </div>
