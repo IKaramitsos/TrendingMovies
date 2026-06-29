@@ -37,11 +37,17 @@ const App = () => {
 
             }
             const data = await response.json();
-            setMovieList(data.results || []);
+            const results = data.results || [];
 
-            if (query && data.results.length > 0) {
+            const sortedResults = query
+                ? [...results].sort((a, b) => b.popularity - a.popularity)
+                : results;
+
+            setMovieList(sortedResults);
+
+            if (query && results.length > 0) {
                 try {
-                    await updateSearchCount(query, data.results[0]);
+                    await updateSearchCount(query, sortedResults[0]);
                     setTrendingError(false);
                 } catch (error) {
                     console.error("Trending feature unavailable:", error);
