@@ -1,6 +1,9 @@
 import searchIcon from '../assets/search.svg';
+import { useTranslation } from 'react-i18next';
 
 const Search = ({ searchTerm, setSearchTerm, onClear }) => {
+    const { t } = useTranslation();
+
     return (
         <div className="search">
             <div>
@@ -8,7 +11,7 @@ const Search = ({ searchTerm, setSearchTerm, onClear }) => {
 
                 <input
                     type="text"
-                    placeholder="Search through thousands of movies..."
+                    placeholder={t('search.placeholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -18,7 +21,7 @@ const Search = ({ searchTerm, setSearchTerm, onClear }) => {
                         type="button"
                         className="search-clear"
                         onClick={onClear}
-                        aria-label="Clear search"
+                        aria-label={t('search.clear')}
                     >
                         ✖
                     </button>

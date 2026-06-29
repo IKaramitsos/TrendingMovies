@@ -55,7 +55,7 @@
   }
 
   h1 {
-    @apply mx-auto max-w-4xl text-center text-5xl font-bold leading-tight tracking-[-2%] text-white sm:text-[64px] sm:leading-[76px];
+    @apply mx-auto max-w-3xl text-center text-5xl font-bold leading-tight tracking-[-2%] text-white sm:text-[64px] sm:leading-[76px];
   }
 
   h2 {
@@ -118,7 +118,7 @@
   }
 
   .wrapper {
-    @apply relative z-10 mx-auto flex max-w-7xl flex-col px-5 py-12 xs:p-10;
+    @apply relative z-10 mx-auto flex max-w-7xl flex-col px-5 py-0 xs:px-10 xs:py-0;
   }
 
   .all-movies {
@@ -126,7 +126,7 @@
   }
 
   .all-movies > div {
-    @apply flex flex-col gap-4 md:flex-row md:items-center md:justify-between;
+    @apply flex flex-col gap-6 md:flex-row md:items-center md:justify-between;
   }
 
   .all-movies h2 {
@@ -134,12 +134,45 @@
   }
 
   .all-movies .search {
-    @apply mx-0 mt-0 w-full max-w-xl md:max-w-lg;
+    @apply mx-0 mt-0 w-full max-w-2xl md:max-w-lg;
   }
 
   .all-movies ul {
     @apply grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5;
   }
+}
+/*
+---------------------------------------------------------------------
+                Header - Language Switcher
+---------------------------------------------------------------------
+*/
+
+.top-bar {
+  @apply mb-8 flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between;
+}
+
+.top-bar__brand {
+  @apply flex items-center;
+}
+
+.top-bar__label {
+  @apply text-sm font-medium uppercase tracking-[0.2em] text-light-200;
+}
+
+.language-switcher {
+  @apply inline-flex w-fit items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-light-200;
+}
+
+.language-switcher button {
+  @apply transition-colors duration-200 hover:text-white;
+}
+
+.language-switcher button.active {
+  @apply font-semibold text-white;
+}
+
+.language-switcher__divider {
+  @apply text-white/20;
 }
 
 /*
@@ -186,13 +219,13 @@
 
 /*
 ---------------------------------------
-              Trending
+                Trending
 ---------------------------------------
 */
 
 @layer components {
   .trending {
-    @apply mt-6 mb-10;
+    @apply mt-10 mb-2;
   }
 
   .trending-header {

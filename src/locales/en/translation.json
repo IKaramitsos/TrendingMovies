@@ -1,0 +1,26 @@
+{
+  "header": {
+    "brand": "Trending Movies"
+  },
+  "hero": {
+    "titleStart": "Find",
+    "titleHighlight1": "Movies",
+    "titleMiddle": "You'll Enjoy without the",
+    "titleHighlight2": "Hassle"
+  },
+  "trending": {
+    "title": "Trending Movies",
+    "note": "Top 5 movies ranked by the most searched titles on this site.",
+    "unavailable": "Feature currently unavailable"
+  },
+  "movies": {
+    "title": "Most popular movies right now"
+  },
+  "search": {
+    "placeholder": "Search through thousands of movies...",
+    "clear": "Clear search"
+  },
+  "errors": {
+    "fetchMovies": "Error fetching movies. Please try again later."
+  }
+}
