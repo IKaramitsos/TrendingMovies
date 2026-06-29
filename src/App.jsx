@@ -10,6 +10,7 @@ import MovieModal from "./components/MovieModal.jsx";
 import { getTrendingMovies, updateSearchCount } from "./appwrite.js";
 
 const App = () => {
+    const [trendingError, setTrendingError] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [searchTerm,setSearchTerm] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
@@ -38,25 +39,42 @@ const App = () => {
             const data = await response.json();
             setMovieList(data.results || []);
 
-            if(query && data.results.length > 0) {
-                await updateSearchCount(query, data.results[0]);
+            if (query && data.results.length > 0) {
+                try {
+                    await updateSearchCount(query, data.results[0]);
+                    setTrendingError(false);
+                } catch (error) {
+                    console.error("Trending feature unavailable:", error);
+                    setTrendingError(true);
+                }
             }
         } catch (error) {
             console.log(`Error fetching movies: ${error}`);
             setErrorMessage('Error fetching movies. Please try again later.');
-        }finally {
+        } finally {
             setIsLoading(false);
         }
     }
 
-    const loadTrendingMovies = async (query = '') => {
-        try{
-        const movies = await getTrendingMovies();
-        setTrendingMovies(movies);
-        }catch(error){
-            console.error(`Error fetching trending movies: ${error}`);
+    const loadTrendingMovies = async () => {
+        try {
+            const movies = await getTrendingMovies();
+            setTrendingMovies(movies || []);
+            setTrendingError(false);
+        } catch (error) {
+            console.error("Error fetching trending movies:", error);
+            setTrendingError(true);
         }
-    }
+    };
+
+    // const loadTrendingMovies = async (query = '') => {
+    //     try{
+    //     const movies = await getTrendingMovies();
+    //     setTrendingMovies(movies);
+    //     }catch(error){
+    //         console.error(`Error fetching trending movies: ${error}`);
+    //     }
+    // }
 
     useEffect(() => {
     fetchMovies(debouncedSearchTerm);
@@ -68,7 +86,6 @@ const App = () => {
 
     return (
         <main>
-
             <div className="pattern"></div>
 
                 <div className="wrapper">
@@ -78,22 +95,35 @@ const App = () => {
                     </h1>
                 </header>
 
-                    {trendingMovies.length > 0 && (
+                    {(trendingMovies.length > 0 || trendingError) && (
                         <section className="trending">
                             <div className="trending-header">
                                 <h2>Trending Movies</h2>
                             </div>
+
                             <p className="trending-note">
                                 Top 5 movies ranked by the most searched titles on this site.
                             </p>
-                            <ul>
-                                {trendingMovies.map((movie, index) => (
-                                    <li key={movie.$id}>
-                                        <p>{index + 1}</p>
-                                        <img src={movie.poster_url} alt={movie.title} />
-                                    </li>
-                                ))}
-                            </ul>
+
+                            <div className={`trending-strip ${trendingError ? "trending-strip--disabled" : ""}`}>
+                                <ul>
+                                    {trendingMovies.map((movie, index) => (
+                                        <li key={movie.$id}>
+                                            <p>{index + 1}</p>
+                                            <img
+                                                src={movie.poster_url}
+                                                alt={movie.searchTerm || "Trending movie"}
+                                            />
+                                        </li>
+                                    ))}
+                                </ul>
+
+                                {trendingError && (
+                                    <div className="trending-strip-overlay">
+                                        <p>Feature currently unavailable</p>
+                                    </div>
+                                )}
+                            </div>
                         </section>
                     )}
 

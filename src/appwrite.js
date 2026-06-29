@@ -14,37 +14,38 @@ export const updateSearchCount = async (searchTerm, movie) => {
     try {
         const result = await database.listDocuments(DATABASE_ID, TABLE_ID, [
             Query.equal('searchTerm', searchTerm),
-        ])
+        ]);
 
-        if(result.documents.length > 0) {
+        if (result.documents.length > 0) {
             const existingdoc = result.documents[0];
 
             await database.updateDocument(DATABASE_ID, TABLE_ID, existingdoc.$id, {
                 count: existingdoc.count + 1,
-            })
-
+            });
         } else {
             await database.createDocument(DATABASE_ID, TABLE_ID, ID.unique(), {
                 searchTerm,
                 count: 1,
                 movie_id: movie.id,
                 poster_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            })
+            });
         }
     } catch (error) {
-        console.error('Error fetching trending movies:',error);
+        console.error("Failed to update search count:", error);
+        throw error;
     }
-}
+};
 
 export const getTrendingMovies = async () => {
     try {
         const result = await database.listDocuments(DATABASE_ID, TABLE_ID, [
             Query.limit(5),
             Query.orderDesc("count")
-        ])
+        ]);
 
         return result.documents;
     } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch trending movies:", error);
+        throw error;
     }
-}
+};

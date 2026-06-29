@@ -179,7 +179,7 @@
 
 @layer components {
   .trending {
-    @apply mt-6;
+    @apply mt-6 mb-10;
   }
 
   .trending-header {
@@ -190,20 +190,36 @@
     @apply mt-2 text-sm text-light-200;
   }
 
-  .trending ul {
-    @apply -mt-10 flex w-full flex-row flex-nowrap gap-5 overflow-x-auto hide-scrollbar;
+  .trending-strip {
+    @apply relative mt-4 overflow-hidden rounded-2xl;
   }
 
-  .trending ul li {
+  .trending-strip ul {
+    @apply -mt-10 flex w-full flex-row flex-nowrap gap-5 overflow-x-auto hide-scrollbar pt-3;
+  }
+
+  .trending-strip ul li {
     @apply flex min-w-[230px] flex-row items-center;
   }
 
-  .trending ul li p {
+  .trending-strip ul li p {
     @apply fancy-text mt-[22px] text-nowrap;
   }
 
-  .trending ul li img {
+  .trending-strip ul li img {
     @apply -ml-3 h-[150px] w-[110px] rounded-lg object-cover;
+  }
+
+  .trending-strip--disabled ul {
+    filter: blur(6px);
+    opacity: 0.24;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .trending-strip-overlay {
+    @apply absolute inset-0 z-10 flex items-center justify-center rounded-2xl;
+    background: rgba(0, 0, 0, 0.28);
   }
 }
 
