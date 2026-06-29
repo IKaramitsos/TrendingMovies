@@ -169,6 +169,19 @@
   .search input:focus {
     @apply ring-0;
   }
+
+  .search-clear {
+    @apply absolute -right-1 flex h-8 w-8 items-center justify-center rounded-full text-lg text-light-200 transition-colors duration-200 hover:bg-white/10 hover:text-white;
+  }
+
+  .search-clear:focus-visible {
+    @apply outline-none ring-2 ring-white/70;
+  }
+
+  .search input {
+    @apply w-full bg-transparent py-2 pl-10 pr-12 text-base text-white outline-none placeholder:text-light-200;
+  }
+
 }
 
 /*

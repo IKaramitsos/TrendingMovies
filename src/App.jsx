@@ -19,7 +19,7 @@ const App = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
-    useDebounce(() => setDebouncedSearchTerm(searchTerm.trim()), 500, [searchTerm]);
+    useDebounce(() => setDebouncedSearchTerm(searchTerm.trim()), 1000, [searchTerm]);
 
     const fetchMovies = async (query = '') => {
         setIsLoading(true);
@@ -65,6 +65,11 @@ const App = () => {
             console.error("Error fetching trending movies:", error);
             setTrendingError(true);
         }
+    };
+
+    const handleClearSearch = () => {
+        setSearchTerm('');
+        setDebouncedSearchTerm('');
     };
 
     useEffect(() => {
@@ -121,7 +126,11 @@ const App = () => {
                 <section className="all-movies">
                     <div>
                     <h2>Most popular movies right now</h2>
-                        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+                        <Search
+                            searchTerm={searchTerm}
+                            setSearchTerm={setSearchTerm}
+                            onClear={handleClearSearch}
+                        />
                     </div>
 
                     {isLoading ? (
