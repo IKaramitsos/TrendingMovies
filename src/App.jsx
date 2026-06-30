@@ -95,13 +95,13 @@ const App = () => {
 
     return (
         <main>
-            <div className="pattern"></div>
+            <div className="page-background"></div>
 
-                <div className="wrapper">
+                <div className="page-container">
                 <header>
-                    <div className="top-bar">
-                        <div className="top-bar__brand">
-                            <span className="top-bar__label">{t('header.brand')}</span>
+                    <div className="site-header">
+                        <div className="site-header__brand">
+                            <span className="site-header__label">{t('header.brand')}</span>
                         </div>
 
                         <div className="language-switcher" aria-label="Language switcher">
@@ -162,7 +162,7 @@ const App = () => {
                         </section>
                     )}
 
-                <section className="all-movies">
+                <section className="movies-section">
                     <div>
                     <h2>{t('movies.title')}</h2>
                         <Search

@@ -5,7 +5,7 @@ const Search = ({ searchTerm, setSearchTerm, onClear }) => {
     const { t } = useTranslation();
 
     return (
-        <div className="search">
+        <div className="search-bar">
             <div>
                 <img src={searchIcon} alt="Search" />
 
