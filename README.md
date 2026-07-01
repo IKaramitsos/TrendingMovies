@@ -1,3 +1,5 @@
+New features and styling have been added. (README will be updated ASAP)
+
 # Trending Movies
 
 A modern React movie discovery app that lets users search for movies, browse popular titles, and explore detailed information about each film in a clean modal interface.
