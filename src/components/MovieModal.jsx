@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import noMovieImage from '../assets/no-movie.png';
 import starIcon from '../assets/star.svg';
 import API_BASE_URL, { API_OPTIONS } from '../tmdb.js';
@@ -33,6 +33,8 @@ const MovieModal = ({ movie, onClose }) => {
     const [watchProviders, setWatchProviders] = useState('Not available');
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const modalRef = useRef(null);
+    const closeButtonRef = useRef(null);
 
     useEffect(() => {
         const fetchMovieData = async () => {
@@ -89,14 +91,42 @@ const MovieModal = ({ movie, onClose }) => {
     }, [movie.id]);
 
     useEffect(() => {
-        const handleEscape = (event) => {
+        closeButtonRef.current?.focus();
+    }, []);
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
             if (event.key === 'Escape') {
                 onClose();
+                return;
+            }
+
+            if (event.key !== 'Tab' || !modalRef.current) return;
+
+            const focusableElements = modalRef.current.querySelectorAll(
+                'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+            );
+
+            if (!focusableElements.length) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            if (event.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    event.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    event.preventDefault();
+                    firstElement.focus();
+                }
             }
         };
 
-        window.addEventListener('keydown', handleEscape);
-        return () => window.removeEventListener('keydown', handleEscape);
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
     }, [onClose]);
 
     const posterUrl = movieDetails?.poster_path
@@ -131,10 +161,16 @@ const MovieModal = ({ movie, onClose }) => {
             onClick={onClose}
         >
             <div
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="movie-modal-title"
+                tabIndex={-1}
                 className="relative max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-white/10 bg-dark-100 p-4 shadow-2xl hide-scrollbar sm:max-h-[90dvh] sm:p-6"
                 onClick={(event) => event.stopPropagation()}
             >
                 <button
+                    ref={closeButtonRef}
                     type="button"
                     className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-white/10 text-lg text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:right-4 sm:top-4 sm:size-10"
                     onClick={onClose}
@@ -164,7 +200,10 @@ const MovieModal = ({ movie, onClose }) => {
                         </div>
 
                         <div className="flex min-w-0 flex-col">
-                            <h3 className="pr-10 text-xl font-bold text-white sm:pr-12 sm:text-3xl">
+                            <h3
+                                id="movie-modal-title"
+                                className="pr-10 text-xl font-bold text-white sm:pr-12 sm:text-3xl"
+                            >
                                 {title}
                             </h3>
 
@@ -190,7 +229,7 @@ const MovieModal = ({ movie, onClose }) => {
                             <div className="mt-4 flex items-center gap-2">
                                 <img
                                     src={starIcon}
-                                    alt="Star icon"
+                                    alt=""
                                     className="size-5 object-contain"
                                 />
                                 <p className="text-base font-bold text-white">{rating}</p>

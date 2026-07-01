@@ -9,7 +9,7 @@ const Search = ({ searchTerm, setSearchTerm, onClear }) => {
             <div className="relative flex items-center">
                 <img
                     src={searchIcon}
-                    alt="Search"
+                    alt=""
                     className="pointer-events-none absolute left-2 h-5 w-5 opacity-70"
                 />
 

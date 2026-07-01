@@ -18,10 +18,10 @@ const MovieCard = ({ movie, onSelect }) => {
     const rating = vote_average ? vote_average.toFixed(1) : 'N/A';
 
     return (
-        <li className="overflow-hidden rounded-xl border border-white/10 bg-dark-100 shadow-inner shadow-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-lg">
+        <li className="overflow-hidden rounded-xl border border-white/10 bg-dark-100 shadow-inner shadow-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-lg focus-within:-translate-y-1 focus-within:border-white focus-within:shadow-lg focus-within:ring-2 focus-within:ring-white/80 focus-within:ring-offset-2 focus-within:ring-offset-black">
             <button
                 type="button"
-                className="flex w-full flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="flex w-full flex-col text-left focus-visible:outline-none"
                 onClick={onSelect}
                 aria-label={`Open details for ${title}`}
             >
@@ -36,7 +36,7 @@ const MovieCard = ({ movie, onSelect }) => {
                         <div className="flex flex-row items-center gap-1">
                             <img
                                 src={starIcon}
-                                alt="Star icon"
+                                alt=""
                                 className="size-4 object-contain"
                             />
                             <p className="text-sm font-bold text-white sm:text-base">{rating}</p>

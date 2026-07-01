@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDebounce } from "react-use";
 import API_BASE_URL, { API_OPTIONS } from './tmdb.js';
 
@@ -14,12 +14,13 @@ const App = () => {
     const { t, i18n } = useTranslation();
     const [trendingError, setTrendingError] = useState(false);
     const [selectedMovie, setSelectedMovie] = useState(null);
-    const [searchTerm,setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const [movieList, setMovieList] = useState([]);
     const [trendingMovies, setTrendingMovies] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const lastTriggerRef = useRef(null);
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm.trim()), 1000, [searchTerm]);
 
@@ -90,6 +91,19 @@ const App = () => {
         }
     };
 
+    const handleSelectMovie = (movie, event) => {
+        lastTriggerRef.current = event.currentTarget;
+        setSelectedMovie(movie);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedMovie(null);
+
+        setTimeout(() => {
+            lastTriggerRef.current?.focus();
+        }, 0);
+    };
+
     useEffect(() => {
         fetchMovies(debouncedSearchTerm);
     }, [debouncedSearchTerm]);
@@ -111,10 +125,7 @@ const App = () => {
                             </span>
                         </div>
 
-                        <div
-                            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-light-200 xs:px-4 xs:text-sm"
-                            aria-label="Language switcher"
-                        >
+                        <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-light-200 xs:px-4 xs:text-sm">
                             <button
                                 type="button"
                                 onClick={() => changeLanguage('en')}
@@ -209,7 +220,7 @@ const App = () => {
                                 <MovieCard
                                     key={movie.id}
                                     movie={movie}
-                                    onSelect={() => setSelectedMovie(movie)}
+                                    onSelect={(event) => handleSelectMovie(movie, event)}
                                 />
                             ))}
                         </ul>
@@ -220,7 +231,7 @@ const App = () => {
             {selectedMovie && (
                 <MovieModal
                     movie={selectedMovie}
-                    onClose={() => setSelectedMovie(null)}
+                    onClose={handleCloseModal}
                 />
             )}
         </main>
