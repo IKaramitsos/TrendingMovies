@@ -126,11 +126,17 @@ const MovieModal = ({ movie, onClose }) => {
     const trailerUrl = trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null;
 
     return (
-        <div className="movie-modal" onClick={onClose}>
-            <div className="movie-modal-panel" onClick={(event) => event.stopPropagation()}>
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-4"
+            onClick={onClose}
+        >
+            <div
+                className="relative max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-white/10 bg-dark-100 p-4 shadow-2xl hide-scrollbar sm:max-h-[90dvh] sm:p-6"
+                onClick={(event) => event.stopPropagation()}
+            >
                 <button
                     type="button"
-                    className="movie-modal-close-btn"
+                    className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-white/10 text-lg text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:right-4 sm:top-4 sm:size-10"
                     onClick={onClose}
                     aria-label={`Close details for ${title}`}
                 >
@@ -138,80 +144,101 @@ const MovieModal = ({ movie, onClose }) => {
                 </button>
 
                 {isLoading ? (
-                    <div className="movie-modal-empty">
-                        <h3>Loading...</h3>
+                    <div className="flex min-h-[260px] flex-col items-center justify-center gap-2 text-center text-white">
+                        <h3 className="text-2xl font-bold">Loading...</h3>
                         <p>Please wait while movie details are loading.</p>
                     </div>
                 ) : errorMessage ? (
-                    <div className="movie-modal-empty">
-                        <h3>Something went wrong</h3>
+                    <div className="flex min-h-[260px] flex-col items-center justify-center gap-2 text-center text-white">
+                        <h3 className="text-2xl font-bold">Something went wrong</h3>
                         <p>{errorMessage}</p>
                     </div>
                 ) : (
-                    <div className="movie-modal-layout">
-                        <div className="movie-modal-poster">
-                            <img src={posterUrl} alt={title} />
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
+                        <div>
+                            <img
+                                src={posterUrl}
+                                alt={title}
+                                className="mx-auto w-full max-w-[210px] rounded-xl object-cover sm:max-w-[260px]"
+                            />
                         </div>
 
-                        <div className="movie-modal-details">
-                            <h3 className="movie-modal-title">{title}</h3>
+                        <div className="flex min-w-0 flex-col">
+                            <h3 className="pr-10 text-xl font-bold text-white sm:pr-12 sm:text-3xl">
+                                {title}
+                            </h3>
 
-                            <p className="movie-modal-info-line">
-                                <span className="movie-modal-label">Duration:</span> {duration}
+                            <p className="mt-2 text-sm leading-6 text-light-200">
+                                <span className="font-bold text-white">Duration:</span> {duration}
                                 <span> • </span>
-                                <span className="movie-modal-label">Certification:</span>{' '}
+                                <span className="font-bold text-white">Certification:</span>{' '}
                                 {releaseInfo.certification}
                             </p>
 
-                            <p className="movie-modal-info-line">
-                                <span className="movie-modal-label">US Release Date:</span>{' '}
+                            <p className="mt-2 text-sm leading-6 text-light-200">
+                                <span className="font-bold text-white">US Release Date:</span>{' '}
                                 {formatDate(releaseInfo.usDate)}
                                 <span> • </span>
-                                <span className="movie-modal-label">GR Release Date:</span>{' '}
+                                <span className="font-bold text-white">GR Release Date:</span>{' '}
                                 {formatDate(releaseInfo.grDate)}
                             </p>
 
-                            <p className="movie-modal-info-line">
-                                <span className="movie-modal-label">Genres: </span> {genres}
+                            <p className="mt-2 text-sm leading-6 text-light-200">
+                                <span className="font-bold text-white">Genres:</span> {genres}
                             </p>
 
-                            <div className="movie-modal-rating">
-                                <img src={starIcon} alt="Star icon" />
-                                <p>{rating}</p>
+                            <div className="mt-4 flex items-center gap-2">
+                                <img
+                                    src={starIcon}
+                                    alt="Star icon"
+                                    className="size-5 object-contain"
+                                />
+                                <p className="text-base font-bold text-white">{rating}</p>
                             </div>
 
-                            <p className="movie-modal-overview">
-                                <span className="movie-modal-label">Overview: <br/> </span>
-                                {overview}</p>
+                            <p className="mt-4 text-sm leading-6 text-light-200">
+                                <span className="font-bold text-white">
+                                    Overview: <br />
+                                </span>
+                                {overview}
+                            </p>
 
-                            <div className="movie-modal-details-grid">
-                                <div>
-                                    <h4>Language Spoken</h4>
-                                    <p>{spokenLanguages}</p>
+                            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div className="min-w-0">
+                                    <h4 className="mb-1 text-sm font-semibold text-white">
+                                        Language Spoken
+                                    </h4>
+                                    <p className="break-words text-sm leading-6 text-light-200">
+                                        {spokenLanguages}
+                                    </p>
                                 </div>
 
-                                <div>
-                                    <h4>Where to watch</h4>
-                                    <p>{watchProviders}</p>
+                                <div className="min-w-0">
+                                    <h4 className="mb-1 text-sm font-semibold text-white">
+                                        Where to watch
+                                    </h4>
+                                    <p className="break-words text-sm leading-6 text-light-200">
+                                        {watchProviders}
+                                    </p>
                                 </div>
                             </div>
 
                             {trailerUrl ? (
-                                <div className="movie-modal-actions">
+                                <div className="mt-6 flex justify-start">
                                     <a
                                         href={trailerUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="movie-modal-trailer-link"
+                                        className="inline-flex w-fit items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                                     >
                                         ▶ Watch Trailer
                                     </a>
                                 </div>
                             ) : (
-                                <div className="movie-modal-actions">
+                                <div className="mt-6 flex justify-start">
                                     <button
                                         type="button"
-                                        className="movie-modal-trailer-link movie-modal-trailer-link-disabled"
+                                        className="inline-flex w-fit cursor-not-allowed items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-light-200 transition-colors duration-200 hover:bg-white/5"
                                         disabled
                                     >
                                         No Trailer Available
