@@ -1,25 +1,25 @@
-New features and styling have been added. (README will be updated ASAP)
-
 # Trending Movies
 
-A modern React movie discovery app that lets users search for movies, browse popular titles, and explore detailed information about each film in a clean modal interface.
+A modern movie discovery app built with React and Vite that lets users search for films, browse trending searches, explore popular titles, and open rich movie details in an accessible modal interface.
 
 ## Features
 
 - Search for movies with debounced input for a smoother user experience
-- Browse the most popular movies currently available
+- Browse the most popular movies 
 - Open a detailed movie modal with:
   - runtime
   - genres
   - spoken languages
   - rating
   - overview
-  - US and Greece release dates
+  - US and GR release dates
   - certification
   - watch providers
   - trailer link when available
-- View trending searched movies powered by Appwrite
-- Responsive UI built for desktop and mobile
+- Switch between English and Greek
+- Responsive UI for desktop and mobile
+- Improved keyboard accessibility with visible focus states for movie cards and modal actions
+- Better modal usability with Escape support, focus management, and clearer keyboard navigation
 
 ## Tech Stack
 
@@ -28,23 +28,8 @@ A modern React movie discovery app that lets users search for movies, browse pop
 - TMDb API
 - Appwrite
 - Tailwind CSS
-
-## Project Structure
-
-```bash
-src/
-  components/
-    MovieCard.jsx
-    MovieModal.jsx
-    Search.jsx
-    Spinner.jsx
-  App.jsx
-  appwrite.js
-  tmdb.js
-  index.css
-  main.jsx
-public/
-```
+- react-i18next
+- reast-use
 
 ## Getting Started
 
@@ -86,31 +71,31 @@ The app fetches movie data from TMDb. When the user searches for a movie, the in
 
 Popular movies are loaded by default when no search query is entered. When a movie card is selected, the app fetches extra details such as release dates, providers, spoken languages, and trailer data to display inside the modal.
 
-Appwrite is used to store and update search counts, allowing the app to show trending searched movies based on actual user activity.
+Appwrite is used to store and update search counts, allowing the app to show trending searched movies based on real user activity.
 
-## Screenshots
+## Accessibility and UX
 
-<img width="1890" height="905" alt="image" src="https://github.com/user-attachments/assets/5233ab9f-252b-4bf2-9738-ee712da06e72" />
-<img width="1890" height="905" alt="image" src="https://github.com/user-attachments/assets/7538df30-d66d-4349-976a-97ddce0966e2" />
+This project includes several usability improvements:
 
-## Future Improvements
-
-- Add pagination for browsing more popular movies
-- Add genre filtering
-- Add sorting options
-- Improve accessibility and keyboard navigation further
-- Search outcomes (release date newest to oldest)
-- Trending posters clickable (Modals)
+- Keyboard-friendly navigation with visible focus indicators
+- Better movie card focus styling so keyboard users can clearly identify the selected card
+- Accessible modal behavior with dialog semantics, focus control, and Escape-to-close support
+- Improved labeling for icon-only controls
+- Cleaner decorative image handling through appropriate `alt` usage
 
 ## Lessons Learned
 
 This project helped strengthen skills in:
+
 - API integration
 - React state management
 - conditional rendering
 - asynchronous data fetching
-- modal UX patterns
+- debounced search patterns
+- modal UX and accessibility patterns
+- Tailwind CSS architecture and utility-first styling
 - working with external services like Appwrite
+- responsive design and keyboard usability
 
 ## License
 
