@@ -68,10 +68,18 @@ const App = () => {
     const loadTrendingMovies = async () => {
         try {
             const movies = await getTrendingMovies();
-            setTrendingMovies(movies || []);
+
+            if (!Array.isArray(movies) || movies.length === 0) {
+                setTrendingMovies([]);
+                setTrendingError(true);
+                return;
+            }
+
+            setTrendingMovies(movies);
             setTrendingError(false);
         } catch (error) {
             console.error("Error fetching trending movies:", error);
+            setTrendingMovies([]);
             setTrendingError(true);
         }
     };
@@ -111,6 +119,17 @@ const App = () => {
     useEffect(() => {
         loadTrendingMovies();
     }, []);
+
+    const fallbackTrendingMovies = Array.from({ length: 5 }, (_, index) => ({
+        $id: `fallback-${index}`,
+        poster_url: hero,
+        searchTerm: "Trending unavailable",
+    }));
+
+    const displayedTrendingMovies =
+        trendingError && trendingMovies.length === 0
+            ? fallbackTrendingMovies
+            : trendingMovies;
 
     return (
         <main>
@@ -160,7 +179,7 @@ const App = () => {
                     </h1>
                 </header>
 
-                {(trendingMovies.length > 0 || trendingError) && (
+                {(displayedTrendingMovies.length > 0 || trendingError) && (
                     <section className="mb-2 mt-10">
                         <div className="flex items-center gap-2">
                             <h2>{t('trending.title')}</h2>
@@ -173,10 +192,10 @@ const App = () => {
                         <div className="relative mt-4 overflow-hidden rounded-2xl">
                             <ul
                                 className={`hide-scrollbar -mt-10 flex w-full flex-row flex-nowrap gap-5 overflow-x-auto pt-3 ${
-                                    trendingError ? 'pointer-events-none select-none blur-[6px] opacity-25' : ''
+                                    trendingError ? 'pointer-events-none select-none blur-sm opacity-25' : ''
                                 }`}
                             >
-                                {trendingMovies.map((movie, index) => (
+                                {displayedTrendingMovies.map((movie, index) => (
                                     <li key={movie.$id} className="flex min-w-[230px] flex-row items-center">
                                         <p className="fancy-text mt-[22px] text-nowrap">{index + 1}</p>
                                         <img
