@@ -51,7 +51,7 @@ npm install
 Create a `.env.local` file in the root of the project and add:
 
 ```env
-VITE_TMDB_API_KEY=your_tmdb_read_access_token
+TMDB_ACCESS_TOKEN=your_tmdb_read_access_token
 VITE_APPWRITE_PROJECT_ID=your_appwrite_project_id
 VITE_APPWRITE_DATABASE_ID=your_appwrite_database_id
 VITE_APPWRITE_TABLE_ID=your_appwrite_table_id
