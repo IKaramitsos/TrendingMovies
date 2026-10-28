@@ -22,5 +22,27 @@
   },
   "errors": {
     "fetchMovies": "Error fetching movies. Please try again later."
+  },
+  "modal": {
+    "close": "Close details for",
+    "loading": "Loading...",
+    "loadingText": "Please wait while movie details are loading.",
+    "errorTitle": "Something went wrong",
+    "errorMessage": "Failed to load movie details.",
+    "duration": "Duration",
+    "certification": "Certification",
+    "usReleaseDate": "US Release Date",
+    "grReleaseDate": "GR Release Date",
+    "genres": "Genres",
+    "overview": "Overview",
+    "languageSpoken": "Language Spoken",
+    "whereToWatch": "Where to watch",
+    "watchTrailer": "Watch Trailer",
+    "noTrailer": "No Trailer Available",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyTitle": "Copy movie title",
+    "notAvailable": "Not available",
+    "noOverview": "No overview available."
   }
 }
