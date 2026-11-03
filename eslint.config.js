@@ -1,65 +1,52 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
-  globalIgnores([
-    'dist',
-    '.vercel',
-  ]),
+  globalIgnores(["dist", ".vercel"]),
 
   {
-    files: ['**/*.{js,jsx}'],
+    files: ["**/*.{js,jsx}"],
 
-    extends: [
-      js.configs.recommended,
-    ],
+    extends: [js.configs.recommended],
 
     languageOptions: {
       ecmaVersion: 2020,
 
       parserOptions: {
-        ecmaVersion: 'latest',
+        ecmaVersion: "latest",
         ecmaFeatures: {
           jsx: true,
         },
-        sourceType: 'module',
+        sourceType: "module",
       },
     },
 
     rules: {
-      'no-unused-vars': [
-        'error',
+      "no-unused-vars": [
+        "error",
         {
-          varsIgnorePattern: '^[A-Z_]',
+          varsIgnorePattern: "^[A-Z_]",
         },
       ],
     },
   },
   {
-    files: [
-      'src/**/*.{js,jsx}',
-    ],
+    files: ["src/**/*.{js,jsx}"],
 
-    extends: [
-      reactHooks.configs.flat.recommended,
-      reactRefresh.configs.vite,
-    ],
+    extends: [reactHooks.configs.flat.recommended, reactRefresh.configs.vite],
 
     languageOptions: {
       globals: globals.browser,
     },
   },
   {
-    files: [
-      'api/**/*.js',
-      'vite.config.js',
-    ],
+    files: ["api/**/*.js", "vite.config.js"],
 
     languageOptions: {
       globals: globals.node,
     },
   },
-])
+]);
