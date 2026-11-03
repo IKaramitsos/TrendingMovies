@@ -13,8 +13,17 @@ import Search from "./components/Search.jsx";
 import Spinner from "./components/Spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
 import MovieModal from "./components/MovieModal.jsx";
+import MovieFilters, {
+  DEFAULT_MOVIE_FILTERS,
+} from "./components/MovieFilters.jsx";
 
 import { getTrendingMovies, updateSearchCount } from "./appwrite.js";
+
+const filtersAreEqual = (a, b) =>
+  a.genre === b.genre &&
+  a.year === b.year &&
+  a.rating === b.rating &&
+  a.sort === b.sort;
 
 const App = () => {
   const { t } = useTranslation();
@@ -33,16 +42,47 @@ const App = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  const [draftFilters, setDraftFilters] = useState({
+    ...DEFAULT_MOVIE_FILTERS,
+  });
+
+  const [appliedFilters, setAppliedFilters] = useState({
+    ...DEFAULT_MOVIE_FILTERS,
+  });
+
   const lastTriggerRef = useRef(null);
 
-  const fetchMovies = async (query = "") => {
+  const fetchMovies = async (query = "", filters = DEFAULT_MOVIE_FILTERS) => {
     setIsLoading(true);
-
     setErrorMessage(null);
 
     try {
-      const endpoint = query
-        ? `${API_BASE_URL}/movies?query=${encodeURIComponent(query)}`
+      const params = new URLSearchParams();
+
+      if (query) {
+        params.set("query", query);
+      } else {
+        if (filters.genre) {
+          params.set("genre", filters.genre);
+        }
+
+        if (filters.year) {
+          params.set("year", filters.year);
+        }
+
+        if (filters.rating) {
+          params.set("rating", filters.rating);
+        }
+
+        if (filters.sort) {
+          params.set("sort", filters.sort);
+        }
+      }
+
+      const queryString = params.toString();
+
+      const endpoint = queryString
+        ? `${API_BASE_URL}/movies?${queryString}`
         : `${API_BASE_URL}/movies`;
 
       const response = await fetch(endpoint);
@@ -55,15 +95,11 @@ const App = () => {
 
       const results = data.results || [];
 
-      const sortedResults = query
-        ? [...results].sort((a, b) => b.popularity - a.popularity)
-        : results;
-
-      setMovieList(sortedResults);
+      setMovieList(results);
 
       if (query && results.length > 0) {
         try {
-          await updateSearchCount(query, sortedResults[0]);
+          await updateSearchCount(query, results[0]);
 
           setTrendingError(false);
         } catch (error) {
@@ -83,12 +119,10 @@ const App = () => {
 
   useDebounce(
     () => {
-      fetchMovies(searchTerm.trim());
+      fetchMovies(searchTerm.trim(), appliedFilters);
     },
-
     searchTerm.trim() ? 1000 : 0,
-
-    [searchTerm],
+    [searchTerm, appliedFilters],
   );
 
   useEffect(() => {
@@ -102,17 +136,14 @@ const App = () => {
 
         if (!Array.isArray(movies) || movies.length === 0) {
           setTrendingMovies([]);
-
           setTrendingError(true);
 
           return;
         }
 
         setTrendingMovies(movies);
-
         setTrendingError(false);
       })
-
       .catch((error) => {
         if (!isActive) {
           return;
@@ -121,7 +152,6 @@ const App = () => {
         console.error("Error fetching trending movies:", error);
 
         setTrendingMovies([]);
-
         setTrendingError(true);
       });
 
@@ -134,6 +164,42 @@ const App = () => {
     setSearchTerm("");
   };
 
+  const handleFilterChange = (filters) => {
+    setDraftFilters(filters);
+  };
+
+  const handleApplyFilters = () => {
+    if (filtersAreEqual(draftFilters, appliedFilters)) {
+      return;
+    }
+
+    setAppliedFilters({
+      ...draftFilters,
+    });
+  };
+
+  const handleResetFilters = () => {
+    const defaultFilters = {
+      ...DEFAULT_MOVIE_FILTERS,
+    };
+
+    const draftIsDefault = filtersAreEqual(draftFilters, defaultFilters);
+
+    const appliedIsDefault = filtersAreEqual(appliedFilters, defaultFilters);
+
+    if (draftIsDefault && appliedIsDefault) {
+      return;
+    }
+
+    setDraftFilters(defaultFilters);
+
+    if (!appliedIsDefault) {
+      setAppliedFilters({
+        ...defaultFilters,
+      });
+    }
+  };
+
   const handleSelectMovie = (movie, event) => {
     lastTriggerRef.current = event.currentTarget;
 
@@ -143,25 +209,18 @@ const App = () => {
   const handleCloseModal = () => {
     setSelectedMovie(null);
 
-    setTimeout(
-      () => {
-        lastTriggerRef.current?.focus();
-      },
-
-      0,
-    );
+    setTimeout(() => {
+      lastTriggerRef.current?.focus();
+    }, 0);
   };
 
   const fallbackTrendingMovies = Array.from(
     {
       length: 5,
     },
-
     (_, index) => ({
       $id: `fallback-${index}`,
-
       poster_url: hero,
-
       searchTerm: "Trending unavailable",
     }),
   );
@@ -170,6 +229,8 @@ const App = () => {
     trendingError && trendingMovies.length === 0
       ? fallbackTrendingMovies
       : trendingMovies;
+
+  const isSearchActive = Boolean(searchTerm.trim());
 
   return (
     <main>
@@ -197,7 +258,6 @@ const App = () => {
                 {displayedTrendingMovies.map((movie, index) => (
                   <li
                     key={movie.$id}
-
                     className="flex min-w-[220px] items-center lg:min-w-0 lg:justify-center"
                   >
                     <p className="fancy-text pointer-events-none shrink-0 leading-none">
@@ -206,9 +266,7 @@ const App = () => {
 
                     <img
                       src={movie.poster_url}
-
                       alt={movie.searchTerm || "Trending movie"}
-
                       className="-ml-5 h-[175px] w-[125px] shrink-0 rounded-lg object-cover lg:-ml-7"
                     />
                   </li>
@@ -231,40 +289,42 @@ const App = () => {
             <div className="w-full md:max-w-lg">
               <Search
                 searchTerm={searchTerm}
-
                 setSearchTerm={setSearchTerm}
-
                 onClear={handleClearSearch}
               />
             </div>
           </div>
 
-          {isLoading ? (
+          <MovieFilters
+            filters={draftFilters}
+            onChange={handleFilterChange}
+            onApply={handleApplyFilters}
+            onReset={handleResetFilters}
+            disabled={isSearchActive}
+          />
+
+          {isLoading && movieList.length === 0 ? (
             <Spinner />
           ) : errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
           ) : (
-            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5">
-              {movieList.map((movie) => (
-                <MovieCard
-                  key={movie.id}
-
-                  movie={movie}
-
-                  onSelect={(event) => handleSelectMovie(movie, event)}
-                />
-              ))}
-            </ul>
+            <div className="relative" aria-busy={isLoading}>
+              <ul className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+                {movieList.map((movie) => (
+                  <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    onSelect={(event) => handleSelectMovie(movie, event)}
+                  />
+                ))}
+              </ul>
+            </div>
           )}
         </section>
       </div>
 
       {selectedMovie && (
-        <MovieModal
-          movie={selectedMovie}
-
-          onClose={handleCloseModal}
-        />
+        <MovieModal movie={selectedMovie} onClose={handleCloseModal} />
       )}
     </main>
   );

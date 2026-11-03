@@ -44,5 +44,41 @@
     "copyTitle": "Copy movie title",
     "notAvailable": "Not available",
     "noOverview": "No overview available."
+  },
+  "filters": {
+    "genre": "Genre",
+    "allGenres": "All genres",
+    "year": "Year",
+    "allYears": "All years",
+    "rating": "Rating",
+    "allRatings": "All ratings",
+    "sort": "Sort by",
+    "sortPopularity": "Popularity",
+    "sortRating": "Rating",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "apply": "Apply filters",
+    "reset": "Reset",
+    "searchDisabled": "Clear the search box to use filters.",
+    "genres": {
+      "action": "Action",
+      "adventure": "Adventure",
+      "animation": "Animation",
+      "comedy": "Comedy",
+      "crime": "Crime",
+      "documentary": "Documentary",
+      "drama": "Drama",
+      "family": "Family",
+      "fantasy": "Fantasy",
+      "history": "History",
+      "horror": "Horror",
+      "music": "Music",
+      "mystery": "Mystery",
+      "romance": "Romance",
+      "scienceFiction": "Science Fiction",
+      "thriller": "Thriller",
+      "war": "War",
+      "western": "Western"
+    }
   }
 }
