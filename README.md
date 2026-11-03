@@ -1,3 +1,5 @@
+Outdated
+
 # Trending Movies
 
 A modern movie discovery app built with React and Vite that lets users search for films, browse trending searches, explore popular titles, and open rich movie details in an accessible modal interface.
