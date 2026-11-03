@@ -4,6 +4,7 @@ import starIcon from "../assets/star.svg";
 
 const MovieCard = ({ movie, onSelect }) => {
   const { title, vote_average, poster_path, release_date } = movie;
+
   const posterUrl = poster_path
     ? `https://image.tmdb.org/t/p/w500${poster_path}`
     : noMovieImage;
@@ -19,7 +20,13 @@ const MovieCard = ({ movie, onSelect }) => {
         onClick={onSelect}
         aria-label={`Open details for ${title}`}
       >
-        <img src={posterUrl} alt={title} />
+        <img
+          src={posterUrl}
+          alt={title}
+          loading="lazy"
+          decoding="async"
+          className="aspect-2/3 w-full object-cover"
+        />
 
         <div className="mt-4">
           <h3 className="line-clamp-2 px-3 pt-2 text-sm font-bold text-white sm:text-base">
@@ -29,6 +36,7 @@ const MovieCard = ({ movie, onSelect }) => {
           <div className="mt-0 flex flex-row flex-wrap items-center gap-1.5 px-3 pb-3">
             <div className="flex flex-row items-center gap-1">
               <img src={starIcon} alt="" className="size-4 object-contain" />
+
               <p className="text-sm font-bold text-white sm:text-base">
                 {rating}
               </p>
