@@ -13,10 +13,10 @@ const MovieCard = ({ movie, onSelect }) => {
   const rating = vote_average ? vote_average.toFixed(1) : "N/A";
 
   return (
-    <li className="overflow-hidden rounded-xl border border-white/10 bg-dark-100 shadow-inner shadow-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-lg focus-within:-translate-y-1 focus-within:border-white focus-within:shadow-lg focus-within:ring-2 focus-within:ring-white/80 focus-within:ring-offset-2 focus-within:ring-offset-black">
+    <li className="h-full overflow-hidden rounded-xl border border-white/10 bg-dark-100 shadow-inner shadow-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-lg focus-within:-translate-y-1 focus-within:border-white focus-within:shadow-lg focus-within:ring-2 focus-within:ring-white/80 focus-within:ring-offset-2 focus-within:ring-offset-black">
       <button
         type="button"
-        className="flex w-full flex-col text-left focus-visible:outline-none"
+        className="flex h-full w-full flex-col text-left focus-visible:outline-none"
         onClick={onSelect}
         aria-label={`Open details for ${title}`}
       >
@@ -25,15 +25,15 @@ const MovieCard = ({ movie, onSelect }) => {
           alt={title}
           loading="lazy"
           decoding="async"
-          className="aspect-2/3 w-full object-cover"
+          className="aspect-[2/3] w-full object-cover"
         />
 
-        <div className="mt-4">
-          <h3 className="line-clamp-2 px-3 pt-2 text-sm font-bold text-white sm:text-base">
+        <div className="mt-auto px-3 pb-3 pt-4">
+          <h3 className="line-clamp-2 text-sm font-bold text-white sm:text-base">
             {title}
           </h3>
 
-          <div className="mt-0 flex flex-row flex-wrap items-center gap-1.5 px-3 pb-3">
+          <div className="mt-1 flex flex-row flex-wrap items-center gap-1.5">
             <div className="flex flex-row items-center gap-1">
               <img src={starIcon} alt="" className="size-4 object-contain" />
 
