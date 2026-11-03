@@ -55,10 +55,6 @@ const MovieModal = ({ movie, onClose }) => {
 
   const copyTimeoutRef = useRef(null);
 
-  /* =====================================================
-       MOVIE DATA
-    ===================================================== */
-
   useEffect(() => {
     const controller = new AbortController();
 
@@ -140,10 +136,6 @@ const MovieModal = ({ movie, onClose }) => {
     return () => controller.abort();
   }, [movie.id, t]);
 
-  /* =====================================================
-       FOCUS
-    ===================================================== */
-
   useEffect(() => {
     closeButtonRef.current?.focus();
   }, []);
@@ -190,10 +182,6 @@ const MovieModal = ({ movie, onClose }) => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  /* =====================================================
-       BODY SCROLL
-    ===================================================== */
-
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
 
@@ -204,10 +192,6 @@ const MovieModal = ({ movie, onClose }) => {
     };
   }, []);
 
-  /* =====================================================
-       COPY TIMEOUT CLEANUP
-    ===================================================== */
-
   useEffect(() => {
     return () => {
       if (copyTimeoutRef.current) {
@@ -215,10 +199,6 @@ const MovieModal = ({ movie, onClose }) => {
       }
     };
   }, []);
-
-  /* =====================================================
-       DERIVED DATA
-    ===================================================== */
 
   const posterUrl = movieDetails?.poster_path
     ? `https://image.tmdb.org/t/p/w500${movieDetails.poster_path}`
@@ -259,10 +239,6 @@ const MovieModal = ({ movie, onClose }) => {
     ? `https://www.youtube.com/watch?v=${trailer.key}`
     : null;
 
-  /* =====================================================
-       COPY TITLE
-    ===================================================== */
-
   const handleCopyTitle = async () => {
     try {
       await navigator.clipboard.writeText(title);
@@ -280,10 +256,6 @@ const MovieModal = ({ movie, onClose }) => {
       console.error("Failed to copy movie title:", error);
     }
   };
-
-  /* =====================================================
-       UI
-    ===================================================== */
 
   return (
     <div
@@ -306,10 +278,6 @@ const MovieModal = ({ movie, onClose }) => {
 
         onClick={(event) => event.stopPropagation()}
       >
-        {/* =========================
-                    CLOSE
-                ========================== */}
-
         <button
           ref={closeButtonRef}
 
@@ -324,10 +292,6 @@ const MovieModal = ({ movie, onClose }) => {
           ✕
         </button>
 
-        {/* =========================
-                    LOADING
-                ========================== */}
-
         {isLoading ? (
           <div className="flex min-h-[260px] flex-col items-center justify-center gap-2 text-center text-white">
             <h3 className="text-2xl font-bold">{t("modal.loading")}</h3>
@@ -335,23 +299,13 @@ const MovieModal = ({ movie, onClose }) => {
             <p className="text-light-200">{t("modal.loadingText")}</p>
           </div>
         ) : errorMessage ? (
-          /* =========================
-                       ERROR
-                    ========================== */
-
           <div className="flex min-h-[260px] flex-col items-center justify-center gap-2 text-center text-white">
             <h3 className="text-2xl font-bold">{t("modal.errorTitle")}</h3>
 
             <p className="text-light-200">{errorMessage}</p>
           </div>
         ) : (
-          /* =========================
-                       MOVIE DETAILS
-                    ========================== */
-
           <div className="grid grid-cols-1 gap-4 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
-            {/* POSTER */}
-
             <div>
               <img
                 src={posterUrl}
@@ -362,11 +316,7 @@ const MovieModal = ({ movie, onClose }) => {
               />
             </div>
 
-            {/* CONTENT */}
-
             <div className="flex min-w-0 flex-col">
-              {/* TITLE + COPY */}
-
               <div className="flex items-center gap-3 pr-10 sm:pr-12">
                 <h3
                   id="movie-modal-title"
@@ -391,8 +341,6 @@ const MovieModal = ({ movie, onClose }) => {
                 </button>
               </div>
 
-              {/* DURATION / CERTIFICATION */}
-
               <p className="mt-2 text-sm leading-6 text-light-200">
                 <span className="font-bold text-white">
                   {t("modal.duration")}:
@@ -404,8 +352,6 @@ const MovieModal = ({ movie, onClose }) => {
                 </span>{" "}
                 {releaseInfo.certification}
               </p>
-
-              {/* RELEASE DATES */}
 
               <p className="mt-2 text-sm leading-6 text-light-200">
                 <span className="font-bold text-white">
@@ -419,16 +365,12 @@ const MovieModal = ({ movie, onClose }) => {
                 {formatDate(releaseInfo.grDate)}
               </p>
 
-              {/* GENRES */}
-
               <p className="mt-2 text-sm leading-6 text-light-200">
                 <span className="font-bold text-white">
                   {t("modal.genres")}:
                 </span>{" "}
                 {genres}
               </p>
-
-              {/* RATING */}
 
               <div className="mt-4 flex items-center gap-2">
                 <img
@@ -442,8 +384,6 @@ const MovieModal = ({ movie, onClose }) => {
                 <p className="text-base font-bold text-white">{rating}</p>
               </div>
 
-              {/* OVERVIEW */}
-
               <p className="mt-4 text-sm leading-6 text-light-200">
                 <span className="font-bold text-white">
                   {t("modal.overview")}:
@@ -453,11 +393,7 @@ const MovieModal = ({ movie, onClose }) => {
                 {overview}
               </p>
 
-              {/* LANGUAGE + PROVIDERS */}
-
               <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {/* LANGUAGES */}
-
                 <div className="min-w-0">
                   <h4 className="mb-1 text-sm font-semibold text-white">
                     {t("modal.languageSpoken")}
@@ -467,8 +403,6 @@ const MovieModal = ({ movie, onClose }) => {
                     {spokenLanguages}
                   </p>
                 </div>
-
-                {/* WATCH PROVIDERS */}
 
                 <div className="min-w-0">
                   <h4 className="mb-1 text-sm font-semibold text-white">
@@ -484,8 +418,6 @@ const MovieModal = ({ movie, onClose }) => {
                   </p>
                 </div>
               </div>
-
-              {/* TRAILER */}
 
               {trailerUrl ? (
                 <div className="mt-6 flex justify-start">
