@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+
 import { useDebounce } from "react-use";
+
 import { useTranslation } from "react-i18next";
 
 import API_BASE_URL from "./tmdb.js";
+
 import hero from "./assets/hero.png";
 
+import Hero from "./components/Hero.jsx";
 import Search from "./components/Search.jsx";
 import Spinner from "./components/Spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
@@ -13,7 +17,7 @@ import MovieModal from "./components/MovieModal.jsx";
 import { getTrendingMovies, updateSearchCount } from "./appwrite.js";
 
 const App = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const [trendingError, setTrendingError] = useState(false);
 
@@ -31,12 +35,9 @@ const App = () => {
 
   const lastTriggerRef = useRef(null);
 
-  /* =====================================================
-       MOVIES
-    ===================================================== */
-
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
+
     setErrorMessage(null);
 
     try {
@@ -60,9 +61,6 @@ const App = () => {
 
       setMovieList(sortedResults);
 
-      /*
-       * Appwrite trending search tracking.
-       */
       if (query && results.length > 0) {
         try {
           await updateSearchCount(query, sortedResults[0]);
@@ -77,22 +75,12 @@ const App = () => {
     } catch (error) {
       console.error("Error fetching movies:", error);
 
-      setErrorMessage("Error fetching movies. Please try again later.");
+      setErrorMessage(t("errors.fetchMovies"));
     } finally {
       setIsLoading(false);
     }
   };
 
-  /*
-   * Search requests:
-   *
-   * - initial empty query loads immediately
-   * - empty search after clearing loads immediately
-   * - actual text searches wait 1 second
-   *
-   * This removes the previous effect that triggered
-   * the React lint warning.
-   */
   useDebounce(
     () => {
       fetchMovies(searchTerm.trim());
@@ -103,16 +91,6 @@ const App = () => {
     [searchTerm],
   );
 
-  /* =====================================================
-       TRENDING
-    ===================================================== */
-
-  /*
-   * Appwrite loading remains asynchronous.
-   *
-   * State updates occur inside the Promise callbacks,
-   * rather than synchronously inside the effect body.
-   */
   useEffect(() => {
     let isActive = true;
 
@@ -152,31 +130,9 @@ const App = () => {
     };
   }, []);
 
-  /* =====================================================
-       SEARCH
-    ===================================================== */
-
   const handleClearSearch = () => {
     setSearchTerm("");
   };
-
-  /* =====================================================
-       LANGUAGE
-    ===================================================== */
-
-  const changeLanguage = (lang) => {
-    i18n.changeLanguage(lang);
-
-    try {
-      localStorage.setItem("language", lang);
-    } catch (error) {
-      console.warn("Could not persist language preference:", error);
-    }
-  };
-
-  /* =====================================================
-       MODAL
-    ===================================================== */
 
   const handleSelectMovie = (movie, event) => {
     lastTriggerRef.current = event.currentTarget;
@@ -187,14 +143,14 @@ const App = () => {
   const handleCloseModal = () => {
     setSelectedMovie(null);
 
-    setTimeout(() => {
-      lastTriggerRef.current?.focus();
-    }, 0);
-  };
+    setTimeout(
+      () => {
+        lastTriggerRef.current?.focus();
+      },
 
-  /* =====================================================
-       TRENDING FALLBACK
-    ===================================================== */
+      0,
+    );
+  };
 
   const fallbackTrendingMovies = Array.from(
     {
@@ -215,83 +171,24 @@ const App = () => {
       ? fallbackTrendingMovies
       : trendingMovies;
 
-  /* =====================================================
-       UI
-    ===================================================== */
-
   return (
     <main>
       <div className="page-background" />
 
+      <Hero />
+
       <div className="page-container">
-        {/* ===============================
-                    HEADER
-                =============================== */}
-
-        <header>
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <div className="min-w-0 flex-1">
-              <span className="truncate text-[11px] font-medium uppercase tracking-[0.22em] text-light-200 xs:text-sm">
-                {t("header.brand")}
-              </span>
-            </div>
-
-            {/* Language selector */}
-
-            <div className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs text-light-200 xs:px-4 xs:text-sm">
-              <button
-                type="button"
-
-                onClick={() => changeLanguage("en")}
-
-                className={`transition-colors duration-200 hover:text-white ${
-                  i18n.language === "en" ? "font-semibold text-white" : ""
-                }`}
-              >
-                English
-              </button>
-
-              <span className="text-white/20">|</span>
-
-              <button
-                type="button"
-
-                onClick={() => changeLanguage("el")}
-
-                className={`transition-colors duration-200 hover:text-white ${
-                  i18n.language === "el" ? "font-semibold text-white" : ""
-                }`}
-              >
-                Ελληνικά
-              </button>
-            </div>
-          </div>
-
-          <img src={hero} alt="Hero Banner" />
-
-          <h1>
-            {t("hero.titleStart")}{" "}
-            <span className="text-gradient">{t("hero.titleHighlight1")}</span>{" "}
-            {t("hero.titleMiddle")}{" "}
-            <span className="text-gradient">{t("hero.titleHighlight2")}</span>
-          </h1>
-        </header>
-
-        {/* ===============================
-                    TRENDING
-                =============================== */}
-
         {(displayedTrendingMovies.length > 0 || trendingError) && (
-          <section className="mb-2 mt-10">
-            <div className="flex items-center gap-2">
-              <h2>{t("trending.title")}</h2>
-            </div>
+          <section className="mt-8">
+            <h2 className="sr-only">{t("trending.title")}</h2>
 
-            <p className="mt-2 text-sm text-light-200">{t("trending.note")}</p>
+            <p className="text-base font-medium text-light-100 sm:text-lg">
+              {t("trending.note")}
+            </p>
 
-            <div className="relative mt-4 overflow-hidden rounded-2xl">
+            <div className="relative mt-6 overflow-hidden rounded-2xl">
               <ul
-                className={`hide-scrollbar -mt-10 flex w-full flex-row flex-nowrap gap-5 overflow-x-auto pt-3 ${
+                className={`hide-scrollbar flex w-full flex-row flex-nowrap gap-5 overflow-x-auto py-3 lg:grid lg:grid-cols-5 lg:gap-4 lg:overflow-visible ${
                   trendingError
                     ? "pointer-events-none select-none blur-sm opacity-25"
                     : ""
@@ -301,9 +198,9 @@ const App = () => {
                   <li
                     key={movie.$id}
 
-                    className="flex min-w-[230px] flex-row items-center"
+                    className="flex min-w-[220px] items-center lg:min-w-0 lg:justify-center"
                   >
-                    <p className="fancy-text mt-[22px] text-nowrap">
+                    <p className="fancy-text pointer-events-none shrink-0 leading-none">
                       {index + 1}
                     </p>
 
@@ -312,7 +209,7 @@ const App = () => {
 
                       alt={movie.searchTerm || "Trending movie"}
 
-                      className="-ml-3 h-[150px] w-[110px] rounded-lg object-cover"
+                      className="-ml-5 h-[175px] w-[125px] shrink-0 rounded-lg object-cover lg:-ml-7"
                     />
                   </li>
                 ))}
@@ -320,18 +217,14 @@ const App = () => {
 
               {trendingError && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-black/30">
-                  <p>{t("trending.unavailable")}</p>
+                  <p className="text-light-100">{t("trending.unavailable")}</p>
                 </div>
               )}
             </div>
           </section>
         )}
 
-        {/* ===============================
-                    MOVIES
-                =============================== */}
-
-        <section className="space-y-6">
+        <section className="mt-24 space-y-6 md:mt-36">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <h2 className="shrink-0">{t("movies.title")}</h2>
 
@@ -365,10 +258,6 @@ const App = () => {
           )}
         </section>
       </div>
-
-      {/* ===============================
-                MOVIE MODAL
-            =============================== */}
 
       {selectedMovie && (
         <MovieModal
