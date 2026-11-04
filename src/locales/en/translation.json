@@ -81,5 +81,9 @@
       "war": "War",
       "western": "Western"
     }
+  },
+  "footer": {
+    "credits": "Data & credits",
+    "tmdbNotice": "This product uses the TMDB API but is not endorsed or certified by TMDB."
   }
 }

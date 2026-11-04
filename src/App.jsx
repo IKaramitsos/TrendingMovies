@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import { useDebounce } from "react-use";
-
 import { useTranslation } from "react-i18next";
 
 import API_BASE_URL from "./tmdb.js";
@@ -13,6 +12,7 @@ import Search from "./components/Search.jsx";
 import Spinner from "./components/Spinner.jsx";
 import MovieCard from "./components/MovieCard.jsx";
 import MovieModal from "./components/MovieModal.jsx";
+import Footer from "./components/Footer.jsx";
 import MovieFilters, {
   DEFAULT_MOVIE_FILTERS,
 } from "./components/MovieFilters.jsx";
@@ -52,7 +52,15 @@ const App = () => {
 
   const lastTriggerRef = useRef(null);
 
+  const requestControllerRef = useRef(null);
+
   const fetchMovies = async (query = "", filters = DEFAULT_MOVIE_FILTERS) => {
+    requestControllerRef.current?.abort();
+
+    const controller = new AbortController();
+
+    requestControllerRef.current = controller;
+
     setIsLoading(true);
     setErrorMessage(null);
 
@@ -85,13 +93,19 @@ const App = () => {
         ? `${API_BASE_URL}/movies?${queryString}`
         : `${API_BASE_URL}/movies`;
 
-      const response = await fetch(endpoint);
+      const response = await fetch(endpoint, {
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
         throw new Error("Failed to fetch movies.");
       }
 
       const data = await response.json();
+
+      if (controller.signal.aborted) {
+        return;
+      }
 
       const results = data.results || [];
 
@@ -109,11 +123,17 @@ const App = () => {
         }
       }
     } catch (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+
       console.error("Error fetching movies:", error);
 
       setErrorMessage(t("errors.fetchMovies"));
     } finally {
-      setIsLoading(false);
+      if (requestControllerRef.current === controller) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -160,6 +180,12 @@ const App = () => {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      requestControllerRef.current?.abort();
+    };
+  }, []);
+
   const handleClearSearch = () => {
     setSearchTerm("");
   };
@@ -183,21 +209,11 @@ const App = () => {
       ...DEFAULT_MOVIE_FILTERS,
     };
 
-    const draftIsDefault = filtersAreEqual(draftFilters, defaultFilters);
-
-    const appliedIsDefault = filtersAreEqual(appliedFilters, defaultFilters);
-
-    if (draftIsDefault && appliedIsDefault) {
+    if (filtersAreEqual(draftFilters, defaultFilters)) {
       return;
     }
 
     setDraftFilters(defaultFilters);
-
-    if (!appliedIsDefault) {
-      setAppliedFilters({
-        ...defaultFilters,
-      });
-    }
   };
 
   const handleSelectMovie = (movie, event) => {
@@ -322,6 +338,8 @@ const App = () => {
           )}
         </section>
       </div>
+
+      <Footer />
 
       {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={handleCloseModal} />

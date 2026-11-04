@@ -81,5 +81,9 @@
       "war": "Πολεμική",
       "western": "Γουέστερν"
     }
+  },
+  "footer": {
+    "credits": "Δεδομένα & αναφορές",
+    "tmdbNotice": "This product uses the TMDB API but is not endorsed or certified by TMDB."
   }
 }
