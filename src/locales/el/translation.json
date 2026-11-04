@@ -43,7 +43,8 @@
     "copied": "Αντιγράφηκε!",
     "copyTitle": "Αντιγραφή τίτλου ταινίας",
     "notAvailable": "Μη διαθέσιμο",
-    "noOverview": "Δεν υπάρχει διαθέσιμη περιγραφή."
+    "noOverview": "Δεν υπάρχει διαθέσιμη περιγραφή.",
+    "justWatchAttribution": "Δεδομένα διαθεσιμότητας streaming από το JustWatch."
   },
   "filters": {
     "genre": "Είδος",

@@ -36,14 +36,15 @@
     "genres": "Genres",
     "overview": "Overview",
     "languageSpoken": "Language Spoken",
-    "whereToWatch": "Where to watch",
+    "whereToWatch": "Where to watch (Greece)",
     "watchTrailer": "Watch Trailer",
     "noTrailer": "No Trailer Available",
     "copy": "Copy",
     "copied": "Copied!",
     "copyTitle": "Copy movie title",
     "notAvailable": "Not available",
-    "noOverview": "No overview available."
+    "noOverview": "No overview available.",
+    "justWatchAttribution": "Streaming availability data by JustWatch."
   },
   "filters": {
     "genre": "Genre",

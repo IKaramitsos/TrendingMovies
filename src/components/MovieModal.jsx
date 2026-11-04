@@ -25,7 +25,6 @@ const getCountryRelease = (releaseData, countryCode) => {
 
   return {
     date: matchedRelease?.release_date || "N/A",
-
     certification: matchedRelease?.certification || "N/A",
   };
 };
@@ -91,14 +90,14 @@ const MovieModal = ({ movie, onClose }) => {
 
         const grRelease = getCountryRelease(releaseData, "GR");
 
-        const regionProviders = providersData?.results?.US;
+        const greekProviders = providersData?.results?.GR;
 
         const allProviders = [
-          ...(regionProviders?.flatrate || []),
-
-          ...(regionProviders?.rent || []),
-
-          ...(regionProviders?.buy || []),
+          ...(greekProviders?.flatrate || []),
+          ...(greekProviders?.free || []),
+          ...(greekProviders?.ads || []),
+          ...(greekProviders?.rent || []),
+          ...(greekProviders?.buy || []),
         ];
 
         const uniqueProviders = Array.from(
@@ -111,9 +110,7 @@ const MovieModal = ({ movie, onClose }) => {
 
         setReleaseInfo({
           usDate: usRelease.date,
-
           grDate: grRelease.date,
-
           certification: usRelease.certification,
         });
 
@@ -260,33 +257,22 @@ const MovieModal = ({ movie, onClose }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 sm:p-4"
-
       onClick={onClose}
     >
       <div
         ref={modalRef}
-
         role="dialog"
-
         aria-modal="true"
-
         aria-labelledby="movie-modal-title"
-
         tabIndex={-1}
-
         className="relative max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-2xl border border-white/10 bg-dark-100 p-4 shadow-2xl hide-scrollbar sm:max-h-[90dvh] sm:p-6"
-
         onClick={(event) => event.stopPropagation()}
       >
         <button
           ref={closeButtonRef}
-
           type="button"
-
           className="absolute right-3 top-3 z-20 flex size-9 items-center justify-center rounded-full bg-white/10 text-lg text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:right-4 sm:top-4 sm:size-10"
-
           onClick={onClose}
-
           aria-label={`${t("modal.close")} ${title}`}
         >
           ✕
@@ -309,9 +295,7 @@ const MovieModal = ({ movie, onClose }) => {
             <div>
               <img
                 src={posterUrl}
-
                 alt={title}
-
                 className="mx-auto w-full max-w-[210px] rounded-xl object-cover sm:max-w-[260px]"
               />
             </div>
@@ -320,7 +304,6 @@ const MovieModal = ({ movie, onClose }) => {
               <div className="flex items-center gap-3 pr-10 sm:pr-12">
                 <h3
                   id="movie-modal-title"
-
                   className="min-w-0 text-xl font-bold leading-tight text-white sm:text-3xl"
                 >
                   {title}
@@ -328,13 +311,9 @@ const MovieModal = ({ movie, onClose }) => {
 
                 <button
                   type="button"
-
                   onClick={handleCopyTitle}
-
                   className="mt-0.5 shrink-0 rounded-md border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-light-200 transition-colors duration-200 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-
                   aria-label={t("modal.copyTitle")}
-
                   aria-live="polite"
                 >
                   {isCopied ? t("modal.copied") : t("modal.copy")}
@@ -373,13 +352,7 @@ const MovieModal = ({ movie, onClose }) => {
               </p>
 
               <div className="mt-4 flex items-center gap-2">
-                <img
-                  src={starIcon}
-
-                  alt=""
-
-                  className="size-5 object-contain"
-                />
+                <img src={starIcon} alt="" className="size-5 object-contain" />
 
                 <p className="text-base font-bold text-white">{rating}</p>
               </div>
@@ -416,6 +389,10 @@ const MovieModal = ({ movie, onClose }) => {
                           .join(", ")
                       : t("modal.notAvailable")}
                   </p>
+
+                  <p className="mt-1 text-[10px] text-gray-100">
+                    {t("modal.justWatchAttribution")}
+                  </p>
                 </div>
               </div>
 
@@ -423,11 +400,8 @@ const MovieModal = ({ movie, onClose }) => {
                 <div className="mt-6 flex justify-start">
                   <a
                     href={trailerUrl}
-
                     target="_blank"
-
                     rel="noopener noreferrer"
-
                     className="inline-flex w-fit items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-white transition-colors duration-200 hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                   >
                     ▶ {t("modal.watchTrailer")}
@@ -437,9 +411,7 @@ const MovieModal = ({ movie, onClose }) => {
                 <div className="mt-6 flex justify-start">
                   <button
                     type="button"
-
                     className="inline-flex w-fit cursor-not-allowed items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-light-200"
-
                     disabled
                   >
                     {t("modal.noTrailer")}
