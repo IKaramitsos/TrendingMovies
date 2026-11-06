@@ -274,7 +274,7 @@ const App = () => {
                 {displayedTrendingMovies.map((movie, index) => (
                   <li
                     key={movie.$id}
-                    className="flex min-w-[220px] items-center lg:min-w-0 lg:justify-center"
+                    className="flex min-w-55 items-center lg:min-w-0 lg:justify-center"
                   >
                     <p className="fancy-text pointer-events-none shrink-0 leading-none">
                       {index + 1}
@@ -283,7 +283,7 @@ const App = () => {
                     <img
                       src={movie.poster_url}
                       alt={movie.searchTerm || "Trending movie"}
-                      className="-ml-5 h-[175px] w-[125px] shrink-0 rounded-lg object-cover lg:-ml-7"
+                      className="-ml-5 h-43.75 w-31.25 shrink-0 rounded-lg object-cover lg:-ml-7"
                     />
                   </li>
                 ))}
