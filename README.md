@@ -1,5 +1,3 @@
-Outdated
-
 # Trending Movies
 
 A modern and responsive movie discovery application built with React and Vite, powered by the TMDb API.
