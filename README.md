@@ -69,6 +69,7 @@ Explore detailed movie information through an interactive modal, including:
 | Tailwind CSS | Responsive styling and UI design |
 | react-i18next | English and Greek internationalization |
 | react-use | Utility hooks, including debounced search |
+| Iconify (`@iconify/react`) | Open-source vector icons used in the hero |
 
 Some of the main technical concepts implemented in this project include:
 
@@ -94,24 +95,47 @@ cd TrendingMovies
 npm install
 ```
 
-### 3. Create your environment variables
+### 3. Provide your environment variables
 
-Create a `.env.local` file in the root of the project and add:
+Choose one of the following.
 
-```env
-TMDB_ACCESS_TOKEN=your_tmdb_read_access_token
-VITE_APPWRITE_PROJECT_ID=your_appwrite_project_id
-VITE_APPWRITE_DATABASE_ID=your_appwrite_database_id
-VITE_APPWRITE_TABLE_ID=your_appwrite_table_id
-```
-
-## Running the project
-
-Start the development server:
+**Option A: pull them from Vercel (recommended, nothing to copy by hand)**
 
 ```bash
-npm run dev
+npm install -g vercel
+vercel login
+vercel link
+vercel env pull .env.local
 ```
+
+**Option B: create `.env.local` yourself**
+
+Copy `.env.example` to `.env.local` (this file is git-ignored) and fill in your real values.
+
+### 4. Start the app
+
+The `/api` functions only run under the Vercel dev server. The plain Vite server (`npm run dev`) serves the UI only, so movie requests will fail with it.
+
+```bash
+npm run dev:vercel
+```
+
+Then open the URL printed in the terminal.
+
+## Deployment (Vercel)
+
+1. Push the repository to GitHub and import it as a new project in Vercel.
+2. In **Project Settings → Environment Variables**, add the four variables from the table above for the environments you use (Production, Preview, Development).
+3. Deploy.
+4. If you change an environment variable later, **redeploy**. `VITE_*` values are baked in at build time, and the serverless functions read the others when they start.
+
+The same approach works on other hosts that support serverless functions: define the variables in the host's dashboard rather than in the code.
+
+### Getting the keys
+
+- **TMDb:** create an account at themoviedb.org and copy the **API Read Access Token** from your API settings.
+- **Appwrite:** create a project, a database and a table. The table needs the attributes `searchTerm` (string), `count` (integer), `movie_id` (integer) and `poster_url` (string). Copy the three IDs.
+
 
 ## Accessibility and UX
 
