@@ -1,5 +1,18 @@
+import { Icon } from "@iconify/react";
 import { useTranslation } from "react-i18next";
 import hero from "../assets/hero.png";
+
+// Fluent Emoji (3D style, MIT license) via Iconify.
+// Browse / swap icons at https://icon-sets.iconify.design/fluent-emoji/
+const floatingIcons = [
+  {
+    name: "streamline-kameleon-color:popcorn-pop",
+    className: "hero-icon hero-icon--1",
+  },
+  { name: "fluent-emoji:clapper-board", className: "hero-icon hero-icon--2" },
+  { name: "openmoji:ticket", className: "hero-icon hero-icon--3" },
+  { name: "selfhst:cardinal-cinema", className: "hero-icon hero-icon--4" },
+];
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
@@ -52,17 +65,18 @@ const Hero = () => {
         </nav>
 
         <div className="hero-showcase">
+          {floatingIcons.map((item) => (
+            <span key={item.name} className={item.className} aria-hidden="true">
+              <Icon icon={item.name} width="100%" height="100%" />
+            </span>
+          ))}
+
           <div className="hero-wordmark" aria-hidden="true">
             Trending Movies
           </div>
         </div>
 
-        <h1 className="hero-heading">
-          {t("hero.titleStart")}{" "}
-          <span className="text-gradient">{t("hero.titleHighlight1")}</span>{" "}
-          {t("hero.titleMiddle")}{" "}
-          <span className="text-gradient">{t("hero.titleHighlight2")}</span>
-        </h1>
+        <h1 className="hero-heading">{t("hero.tagline")}</h1>
       </div>
     </header>
   );

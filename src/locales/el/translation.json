@@ -3,10 +3,7 @@
     "brand": "Δημοφιλείς Ταινίες"
   },
   "hero": {
-    "titleStart": "Βρες",
-    "titleHighlight1": "εύκολα",
-    "titleMiddle": "δημοφιλείς",
-    "titleHighlight2": "ταινίες."
+    "tagline": "Βρες εύκολα δημοφιλείς ταινίες."
   },
   "trending": {
     "title": "Δημοφιλείς Ταινίες",

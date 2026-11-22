@@ -3,10 +3,7 @@
     "brand": "Trending Movies"
   },
   "hero": {
-    "titleStart": "Find",
-    "titleHighlight1": "trending",
-    "titleMiddle": "movies",
-    "titleHighlight2": "easily."
+    "tagline": "Find trending movies easily."
   },
   "trending": {
     "title": "Trending Movies",
