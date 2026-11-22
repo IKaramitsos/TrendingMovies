@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@iconify/react": "^6.0.4",
     "@tailwindcss/vite": "^4.2.4",
     "appwrite": "^24.2.0",
     "i18next": "26.3.4",

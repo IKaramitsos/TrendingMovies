@@ -4,9 +4,9 @@
   },
   "hero": {
     "titleStart": "Find",
-    "titleHighlight1": "Movies",
-    "titleMiddle": "You'll Enjoy without the",
-    "titleHighlight2": "Hassle"
+    "titleHighlight1": "trending",
+    "titleMiddle": "movies",
+    "titleHighlight2": "easily."
   },
   "trending": {
     "title": "Trending Movies",
