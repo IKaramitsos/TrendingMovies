@@ -8,7 +8,7 @@ Built with a focus on responsive design, accessibility, and a smooth user experi
 
 ### Homepage
 
-![img.png](img.png)
+![img_4.png](img_4.png)
 
 ### Movie Search & Filters
 
