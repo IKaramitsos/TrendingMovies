@@ -35,35 +35,45 @@ const Hero = () => {
             <img src={hero} alt="Trending Movies" className="hero-brand-logo" />
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/15 px-3 py-1.5 text-xs text-light-200 backdrop-blur-sm">
-            <button
-              type="button"
-
-              onClick={() => changeLanguage("en")}
-
-              className={`px-1 py-1 transition-colors duration-200 hover:text-white ${
-                i18n.language === "en" ? "font-semibold text-white" : ""
-              }`}
+          <div className="flex items-center gap-3">
+            {/* GitHub Repository Link */}
+            <a
+              href="https://github.com/IKaramitsos/TrendingMovies"
+              target="_blank"
+              rel="noopener noreferrer"
+              className=" inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/15 px-4 py-2.5 text-xs text-light-200 backdrop-blur-sm transition-colors duration-200 hover:text-white"
+              aria-label="GitHub Repository"
             >
-              English
-            </button>
+              <Icon icon="mdi:github" width="16" height="16" />
+              <span>GitHub</span>
+            </a>
 
-            <span className="text-white/25">|</span>
+            {/* Language Switcher */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/15 px-3 py-1.5 text-xs text-light-200 backdrop-blur-sm">
+              <button
+                type="button"
+                onClick={() => changeLanguage("en")}
+                className={`px-1 py-1 transition-colors duration-200 hover:text-white ${
+                  i18n.language === "en" ? "font-semibold text-white" : ""
+                }`}
+              >
+                English
+              </button>
 
-            <button
-              type="button"
+              <span className="text-white/25">|</span>
 
-              onClick={() => changeLanguage("el")}
-
-              className={`px-1 py-1 transition-colors duration-200 hover:text-white ${
-                i18n.language === "el" ? "font-semibold text-white" : ""
-              }`}
-            >
-              Ελληνικά
-            </button>
+              <button
+                type="button"
+                onClick={() => changeLanguage("el")}
+                className={`px-1 py-1 transition-colors duration-200 hover:text-white ${
+                  i18n.language === "el" ? "font-semibold text-white" : ""
+                }`}
+              >
+                Ελληνικά
+              </button>
+            </div>
           </div>
         </nav>
-
         <div className="hero-showcase">
           {floatingIcons.map((item) => (
             <span key={item.name} className={item.className} aria-hidden="true">
